@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TokoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+/** Public routes */
+Route::post('/login', [AuthController::class, 'login']);
+
+/** Protected routes */
+Route::middleware(['auth:sanctum'])->group(function () {
+    /** Auth */
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('/profile', 'profile');
+        Route::post('/logout', 'logout');
+    });
+
+    /** Toko */
+    Route::controller(TokoController::class)->group(function () {
+        Route::get('/tokos', 'index');
+        Route::post('/tokos', 'store');
+        Route::get('/tokos/{id}', 'show');
+    });
 });
