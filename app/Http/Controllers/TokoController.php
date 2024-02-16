@@ -14,7 +14,7 @@ class TokoController extends Controller
     public function index()
     {
         $tokos = Toko::all();
-        $data = count($tokos) === 0 ? [] : ['tokos' => $tokos];
+        $data = count($tokos) === 0 ? [] : $tokos;
         $message = count($tokos) === 0 ? 'Toko belum ada.' : 'Berhasil mendapatkan semua toko.';
 
         return new ApiResponse($data, 200, $message);
@@ -31,7 +31,7 @@ class TokoController extends Controller
             'created_by' => auth()->user()->id
         ]);
 
-        return new ApiResponse(['toko' => $toko], 201, 'Toko berhasil dibuat.');
+        return new ApiResponse($toko, 201, 'Toko berhasil dibuat.');
     }
 
     /**
@@ -47,7 +47,7 @@ class TokoController extends Controller
 
         // TODO: relation with setting
 
-        return new ApiResponse(['toko' => $toko], 200, 'Berhasil mendapatkan informasi toko.');
+        return new ApiResponse($toko, 200, 'Berhasil mendapatkan informasi toko.');
     }
 
     /**
@@ -63,7 +63,7 @@ class TokoController extends Controller
 
         $toko->update($request->all());
 
-        return new ApiResponse(['toko' => $toko], 200, 'Toko berhasil diperbarui.');
+        return new ApiResponse($toko, 200, 'Toko berhasil diperbarui.');
     }
 
     /**

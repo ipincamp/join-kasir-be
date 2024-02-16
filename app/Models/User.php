@@ -22,6 +22,11 @@ class User extends Authenticatable
         'username',
         'password',
         'avatar',
+        'level',
+        'pin',
+        'created_by',
+        'updated_by',
+        'deleted_by',
     ];
 
     /**
@@ -33,6 +38,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'level',
+        'pin',
         'tokens',
     ];
 
