@@ -30,6 +30,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/logout', 'logout'); // passed
     });
 
+    /** Admin */
+    Route::controller(AdminController::class)->middleware('ability:admin')->group(function () {
+        Route::get('/users', 'index'); // passed
+        Route::get('/users/active', 'active'); // passed
+        Route::get('/users/deleted', 'deleted'); // passed
+        Route::patch('/users/{id}/reset', 'reset'); // passed
+        Route::delete('/users/{id}', 'temporarilyRemove'); // passed
+        Route::delete('/users/{id}/permanent', 'permanentRemove'); // passed
+    });
+
     /** Toko */
     Route::controller(TokoController::class)->group(function () {
         Route::get('/tokos', 'index'); // passed
@@ -37,30 +47,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/tokos/{id}', 'show'); // passed
     });
 
-    /** Admin */
-    Route::controller(AdminController::class)->middleware('ability:admin')->group(function () {
-        Route::patch('/users/{id}/password', 'updatePassword');
-        Route::delete('/users/{id}', 'destroy');
-    });
-
     /** Owner */
     Route::controller(OwnerController::class)->group(function () {
         Route::get('/owners', 'index'); // passed
         Route::post('/owners', 'store'); // passed
-        Route::patch('/owners/{id}', 'update');
+        Route::patch('/owners/{id}', 'update'); // passed
     });
 
     /** Leader */
     Route::controller(LeaderController::class)->group(function () {
         Route::get('/leaders', 'index'); // passed
         Route::post('/leaders', 'store'); // passed
-        Route::patch('/leaders/{id}', 'update');
+        Route::patch('/leaders/{id}', 'update'); // passed
     });
 
     /** Cashier */
     Route::controller(CashierController::class)->group(function () {
         Route::get('/cashiers', 'index'); // passed
         Route::post('/cashiers', 'store'); // passed
-        Route::patch('/cashiers/{id}', 'update');
+        Route::patch('/cashiers/{id}', 'update'); // passed
     });
 });

@@ -7,6 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -37,6 +38,10 @@ class Handler extends ExceptionHandler
                 // dd(class_basename($e));
                 if ($e instanceof NotFoundHttpException) {
                     return new ApiResponse([], 404, 'Endpoint tidak ditemukan.');
+                }
+
+                if ($e instanceof MethodNotAllowedHttpException) {
+                    return new ApiResponse([], 405, 'Metode yang Anda gunakan salah.');
                 }
 
                 if ($e instanceof AuthenticationException) {

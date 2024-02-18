@@ -24,8 +24,8 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', 'unique:users,username'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'username' => ['required', 'string', 'max:255', 'unique:users,username', 'alpha_num'],
+            'password' => ['required', 'string', 'min:6', 'confirmed', 'regex:/^(?=.*[a-z])(?=.*[0-9]).+$/i'],
             'pin' => ['nullable', 'boolean']
         ];
     }

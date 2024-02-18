@@ -15,12 +15,12 @@ class LeaderController extends Controller
      */
     public function index()
     {
-        $leaders = User::where('level', 2)->get();
+        $leaders = User::where('level', 3)->get();
 
         return new ApiResponse(
-            count($leaders) === 0 ? null : $leaders,
+            count($leaders) === 0 ? [] : $leaders,
             200,
-            'Berhasil mendapatkan semua data.'
+            'Berhasil mendapatkan semua data kepala.'
         );
     }
 
@@ -33,7 +33,7 @@ class LeaderController extends Controller
             'name' => $request['name'],
             'username' => $request['username'],
             'password' => Hash::make($request['password']),
-            'level' => 2,
+            'level' => 3,
             'pin' => 0,
             'created_by' => auth()->user()->id
         ]);
@@ -46,7 +46,7 @@ class LeaderController extends Controller
      */
     public function update(UpdateUserRequest $request, string $id)
     {
-        $leader = User::find($id);
+        $leader = User::where('level', 3)->find($id);
 
         if (!$leader) {
             return new ApiResponse([], 403, 'Kepala tidak ditemukan.');
@@ -54,10 +54,9 @@ class LeaderController extends Controller
 
         $leader->update([
             'name' => $request['name'],
-            'username' => $request['username'],
             'updated_by' => auth()->user()->id
         ]);
 
-        return new ApiResponse($leader, 200, 'Kepala berhasil diubah.');
+        return new ApiResponse($leader, 200, 'Data kepala berhasil diubah.');
     }
 }

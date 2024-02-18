@@ -21,9 +21,7 @@ class AuthController extends Controller
         // TODO: validate license
 
         $user = Auth::user();
-        // admin: 0, owner: 1, leader: 2, cashier: 3
         $abilities = ['admin', 'owner', 'leader', 'cashier'];
-        $level = $user->level;
 
         if (count($user->tokens) > 0) {
             return new ApiResponse([], 403, 'Anda sudah login.');
@@ -33,7 +31,7 @@ class AuthController extends Controller
             'user' => $user,
             'token' => $request
                 ->user()
-                ->createToken('login', [$abilities[$level] ?? 'cashier'])
+                ->createToken('login', [$abilities[$user->level - 1] ?? 'cashier'])
                 ->plainTextToken
         ], 200, 'Login berhasil.');
     }
@@ -45,7 +43,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        return new ApiResponse(['user' => $user], 200, 'Berhasil mendapatkan informasi Anda.');
+        return new ApiResponse($user, 200, 'Berhasil mendapatkan informasi Anda.');
     }
 
     /**

@@ -15,12 +15,12 @@ class OwnerController extends Controller
      */
     public function index()
     {
-        $owners = User::where('level', 1)->get();
+        $owners = User::where('level', 2)->get();
 
         return new ApiResponse(
-            count($owners) === 0 ? null : $owners,
+            count($owners) === 0 ? [] : $owners,
             200,
-            'Berhasil mendapatkan semua data.'
+            'Berhasil mendapatkan semua data pemilik.'
         );
     }
 
@@ -33,12 +33,12 @@ class OwnerController extends Controller
             'name' => $request['name'],
             'username' => $request['username'],
             'password' => Hash::make($request['password']),
-            'level' => 1,
+            'level' => 2,
             'pin' => boolval($request['pin']) ? 1 : 0,
             'created_by' => auth()->user()->id
         ]);
 
-        return new ApiResponse($owner, 201, 'Owner berhasil ditambahkan.');
+        return new ApiResponse($owner, 201, 'Pemilik berhasil ditambahkan.');
     }
 
     /**
@@ -46,10 +46,10 @@ class OwnerController extends Controller
      */
     public function update(UpdateUserRequest $request, string $id)
     {
-        $owner = User::find($id);
+        $owner = User::where('level', 2)->find($id);
 
         if (!$owner) {
-            return new ApiResponse([], 403, 'Owner tidak ditemukan.');
+            return new ApiResponse([], 403, 'Pemilik tidak ditemukan.');
         }
 
         $owner->update([
@@ -57,6 +57,6 @@ class OwnerController extends Controller
             'updated_by' => auth()->user()->id
         ]);
 
-        return new ApiResponse($owner, 200, 'Owner berhasil diubah.');
+        return new ApiResponse($owner, 200, 'Data pemilik berhasil diubah.');
     }
 }
