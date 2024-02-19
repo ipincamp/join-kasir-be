@@ -9,13 +9,21 @@
 
 ## Installation
 
-- Clone this repository.
-- Go to the project folder and run the following command to install all the required dependencies.
+-   Clone this repository.
+
+```sh
+git clone https://github.com/ipincamp/join-kasir-be.git
+```
+
+-   Go to the project folder and run the following command to install all the required dependencies.
+
 ```sh
 cd join-kasir-be
 composer install
 ```
-- Copy `.env.example` file to `.env` on the root project.
+
+-   Copy `.env.example` file to `.env` on the root project.
+
 ```sh
 # Windows
 copy .env.example .env
@@ -23,28 +31,40 @@ copy .env.example .env
 # Linux
 cp .env.example .env
 ```
-- Open your `.env` and change the database host (`DB_HOST`), database port (`DB_PORT`), database name (`DB_DATABASE`), database username (`DB_USERNAME`) and database password (`DB_PASSWORD`) with your configuration.
-- Run the following command to generate a new application key.
+
+-   Open your `.env` and change the database host (`DB_HOST`), database port (`DB_PORT`), database name (`DB_DATABASE`), database username (`DB_USERNAME`) and database password (`DB_PASSWORD`) with your configuration.
+-   Also make sure the `SU_NAME`, `SU_USERNAME`, `SU_PASSWORD` variables are filled in correctly.
+-   Run the following command to generate a new application key.
+
 ```sh
 php artisan key:generate
 ```
-- Run the command to migrate the table to the database.
+
+-   Run the command to migrate the table to the database, as well as inject the superuser using the seeder.
+
 ```sh
-php artisan migrate
+php artisan migrate:fresh --seed
 ```
-- Enjoy your app.
+
+-   Run it using any server (e.g. XAMPP or Laragon).
+
+```sh
+php artisan serve
+```
+
+-   Enjoy your app.
 
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   [Simple, fast routing engine](https://laravel.com/docs/routing).
+-   [Powerful dependency injection container](https://laravel.com/docs/container).
+-   Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+-   Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+-   Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+-   [Robust background job processing](https://laravel.com/docs/queues).
+-   [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
@@ -62,19 +82,19 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 
 ### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   **[Vehikl](https://vehikl.com/)**
+-   **[Tighten Co.](https://tighten.co)**
+-   **[WebReinvent](https://webreinvent.com/)**
+-   **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+-   **[64 Robots](https://64robots.com)**
+-   **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+-   **[Cyber-Duck](https://cyber-duck.co.uk)**
+-   **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+-   **[Jump24](https://jump24.co.uk)**
+-   **[Redberry](https://redberry.international/laravel/)**
+-   **[Active Logic](https://activelogic.com)**
+-   **[byte5](https://byte5.de)**
+-   **[OP.GG](https://op.gg)**
 
 ## Contributing
 

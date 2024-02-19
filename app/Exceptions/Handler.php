@@ -56,6 +56,7 @@ class Handler extends ExceptionHandler
                     return new ApiResponse($e->validator->getMessageBag(), 400, 'Terjadi kesalahan pada input.');
                 }
 
+                dd($e);
                 return new ApiResponse($e, 500, 'Terjadi kesalahan yang tidak diketahui.');
             }
         });

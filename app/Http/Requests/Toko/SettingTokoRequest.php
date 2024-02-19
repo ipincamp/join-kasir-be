@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Toko;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class TokoRequest extends FormRequest
+class SettingTokoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,11 @@ class TokoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'kode' => ['required', 'integer', 'unique:tokos,kode'],
-            'name' => ['required', 'string']
+            'site_address' => ['required', 'string'],
+            'site_name' => ['required', 'string'],
+            'note_header' => ['required', 'string'],
+            'site_motd' => ['required', 'string'],
+            'note_footer' => ['required', 'string'],
         ];
     }
 }
