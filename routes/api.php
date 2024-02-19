@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\LeaderController;
 use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\SettingTokoController;
 use App\Http\Controllers\TokoController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/tokos', 'index'); // passed
         Route::post('/tokos', 'store'); // passed
         Route::get('/tokos/{id}', 'show'); // passed
+        Route::patch('/tokos/{id}', 'update'); // passed
+    });
+
+    /** Setting Toko */
+    Route::controller(SettingTokoController::class)->group(function () {
+        Route::get('/tokos/{kode}/settings', 'index'); // passed
+        Route::post('/tokos/{kode}/settings', 'store'); // passed
     });
 
     /** Owner */

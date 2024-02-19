@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TokoRequest;
+use App\Http\Requests\Toko\TokoRequest;
 use App\Http\Responses\ApiResponse;
 use App\Models\Toko;
 
@@ -14,10 +14,12 @@ class TokoController extends Controller
     public function index()
     {
         $tokos = Toko::all();
-        $data = count($tokos) === 0 ? [] : $tokos;
-        $message = count($tokos) === 0 ? 'Toko belum ada.' : 'Berhasil mendapatkan semua toko.';
 
-        return new ApiResponse($data, 200, $message);
+        return new ApiResponse(
+            count($tokos) === 0 ? [] : $tokos,
+            200,
+            'Berhasil mendapatkan semua toko.'
+        );
     }
 
     /**
@@ -61,7 +63,11 @@ class TokoController extends Controller
             return new ApiResponse([], 404, 'Toko tidak ditemukan.');
         }
 
-        $toko->update($request->all());
+        $toko->update([
+            'kode' => (int)$request['kode'],
+            'name' => $request['name'],
+            'updated_by' => auth()->user()->id
+        ]);
 
         return new ApiResponse($toko, 200, 'Toko berhasil diperbarui.');
     }
