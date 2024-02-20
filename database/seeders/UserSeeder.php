@@ -15,11 +15,10 @@ class UserSeeder extends Seeder
     {
         // superuser
         User::create([
-            'name' => env('SU_NAME'),
-            'username' => env('SU_USERNAME'),
-            'password' => Hash::make(env('SU_PASSWORD')),
+            'name' => env('ADMIN_NAME'),
+            'username' => env('ADMIN_USERNAME'),
+            'password' => Hash::make(env('ADMIN_PASSWORD')),
             'level' => 1,
-            'pin' => 1,
             'created_at' => now(),
             'created_by' => 0
         ]);

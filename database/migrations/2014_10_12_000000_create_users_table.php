@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->enum('level', [1, 2, 3, 4]);
-            $table->boolean('pin')->default(false);
-            $table->string('avatar')->default('user.png');
+            $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
