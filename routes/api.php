@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\LeaderController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\SettingTokoController;
 use App\Http\Controllers\TokoController;
+use App\Http\Controllers\User\AdminUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,13 +32,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     /** Admin */
-    Route::controller(AdminController::class)->middleware('ability:admin')->group(function () {
-        Route::get('/users', 'index'); // passed
+    Route::controller(AdminUserController::class)->middleware('ability:admin')->group(function () {
+        Route::get('/users', 'allUsers'); // passed
         Route::get('/users/active', 'active'); // passed
         Route::get('/users/deleted', 'deleted'); // passed
-        Route::patch('/users/{id}/reset', 'reset'); // passed
-        Route::delete('/users/{id}', 'temporarilyRemove'); // passed
-        Route::delete('/users/{id}/permanent', 'permanentRemove'); // passed
+        Route::patch('/users/{id}/reset', 'resetPassword'); // passed
+        Route::delete('/users/{id}/temp', 'tempoRemove'); // passed
+        Route::delete('/users/{id}/perm', 'permaRemove'); // passed
     });
 
     /** Toko */

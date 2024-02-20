@@ -23,8 +23,8 @@ class ResetPasswordUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => ['required', 'string', 'min:6', 'regex:/^(?=.*[a-z])(?=.*[0-9]).+$/i'],
-            'new_password' => ['required', 'string', 'min:6', 'confirmed', 'regex:/^(?=.*[a-z])(?=.*[0-9]).+$/i']
+            'password' => ['required', 'string', 'min:6'],
+            'new_password' => ['required', 'string', 'min:6', 'confirmed']
         ];
     }
 }

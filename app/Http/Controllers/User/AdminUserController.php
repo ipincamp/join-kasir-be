@@ -1,22 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ResetPasswordUserRequest;
+use App\Http\Resources\UserResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class AdminController extends Controller
+class AdminUserController extends Controller
 {
     /**
      * Get all users (active or removed).
      */
-    public function index()
+    public function allUsers()
     {
         $users = User::withTrashed()->where('level', '!=', 1)->get();
 
-        return new ApiResponse($users, 200, 'Berhasil mendapatkan semua data pengguna.');
+        return new ApiResponse(
+            new UserResource($users),
+            200,
+            'Berhasil mendapatkan semua data pengguna.'
+        );
     }
 
     /**
@@ -26,7 +32,11 @@ class AdminController extends Controller
     {
         $users = User::where('level', '!=', 1)->get();
 
-        return new ApiResponse($users, 200, 'Berhasil mendapatkan semua data pengguna aktif.');
+        return new ApiResponse(
+            new UserResource($users),
+            200,
+            'Berhasil mendapatkan semua data pengguna aktif.'
+        );
     }
 
     /**
@@ -34,30 +44,34 @@ class AdminController extends Controller
      */
     public function deleted()
     {
-        $users = User::onlyTrashed()->where('level', '!=', 1)->get();
+        $users = User::where('level', '!=', 1)->get();
 
-        return new ApiResponse($users, 200, 'Berhasil mendapatkan semua data pengguna yang dihapus.');
+        return new ApiResponse(
+            new UserResource($users),
+            200,
+            'Berhasil mendapatkan semua data pengguna yang dihapus.'
+        );
     }
 
     /**
      * Reset password other user.
      */
-    public function reset(ResetPasswordUserRequest $request, string $id)
+    public function resetPassword(ResetPasswordUserRequest $request, string $id)
     {
         $user = User::where('level', '!=', 1)->find($id);
-        $updater = auth()->user();
+        $admin = auth()->user();
 
         if (!$user) {
             return new ApiResponse([], 403, 'Pengguna tidak ditemukan.');
         }
 
-        if (!Hash::check($request['password'], $updater->password)) {
+        if (!Hash::check($request['password'], $admin->password)) {
             return new ApiResponse([], 400, 'Kata sandi Anda tidak benar.');
         }
 
         $user->update([
             'password' => Hash::make($request['new_password']),
-            'updated_by' => $updater->id
+            'updated_by' => $admin->id
         ]);
 
         return new ApiResponse($user, 200, 'Kata sandi pengguna berhasil direset.');
@@ -66,7 +80,7 @@ class AdminController extends Controller
     /**
      * Soft delete other user.
      */
-    public function temporarilyRemove(string $id)
+    public function tempoRemove(string $id)
     {
         $user = User::where('level', '!=', 1)->find($id);
 
@@ -87,7 +101,7 @@ class AdminController extends Controller
     /**
      * Permanent delete other user.
      */
-    public function permanentRemove(string $id)
+    public function permaRemove(string $id)
     {
         $user = User::withTrashed()->where('level', '!=', 1)->find($id);
 
