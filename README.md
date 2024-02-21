@@ -32,9 +32,22 @@ copy .env.example .env
 cp .env.example .env
 ```
 
--   Open your `.env` and change the database host (`DB_HOST`), database port (`DB_PORT`), database name (`DB_DATABASE`), database username (`DB_USERNAME`) and database password (`DB_PASSWORD`) with your configuration.
--   Also make sure the `SU_NAME`, `SU_USERNAME`, `SU_PASSWORD` variables are filled in correctly.
--   Run the following command to generate a new application key.
+-   Open your `.env` and make following changes bellow:
+
+```sh
+...
+DB_HOST=
+DB_PORT=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+...
+ADMIN_NAME=
+ADMIN_USERNAME=
+ADMIN_PASSWORD=
+```
+
+-   Run this command to generate a new application key.
 
 ```sh
 php artisan key:generate
@@ -46,7 +59,20 @@ php artisan key:generate
 php artisan migrate:fresh --seed
 ```
 
--   Run it using any server (e.g. XAMPP or Laragon).
+-   Now install all dependencies and run the build script. Make sure you've installed Node.js and NPM. Check minimum version [here](package.json).
+
+```sh
+# install dependencies
+npm install
+
+# development
+npm run dev
+
+# production
+npm run build
+```
+
+-   Finally, run it using the following command, or you can configure it on the server side (e.g. XAMPP or Laragon).
 
 ```sh
 php artisan serve
