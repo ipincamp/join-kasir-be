@@ -15,6 +15,11 @@ return new class extends Migration
             $table->id();
             $table->integer('kode')->unique();
             $table->string('name');
+            $table->string('site_name')->nullable();
+            $table->string('site_address')->nullable();
+            $table->string('site_motd')->nullable();
+            $table->string('site_header')->nullable();
+            $table->longText('site_footer')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedBigInteger('created_by');
