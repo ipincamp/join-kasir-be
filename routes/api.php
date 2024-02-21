@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\SettingTokoController;
-use App\Http\Controllers\TokoController;
+use App\Http\Controllers\Toko\SettingTokoController;
+use App\Http\Controllers\Toko\TokoController;
 use App\Http\Controllers\User\AdminUserController;
 use App\Http\Controllers\User\CashierUserController;
 use App\Http\Controllers\User\LeaderUserController;
@@ -48,11 +48,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/tokos', 'store'); // passed
         Route::get('/tokos/{id}', 'show'); // passed
         Route::patch('/tokos/{id}', 'update'); // passed
+        // Route::delete('/tokos/{id}', 'destroy');
     });
 
     /** Setting Toko */
     Route::controller(SettingTokoController::class)->group(function () {
-        Route::get('/tokos/{kode}/settings', 'index'); // passed
+        Route::get('/tokos/{kode}/settings', 'show'); // passed
         Route::post('/tokos/{kode}/settings', 'store'); // passed
     });
 

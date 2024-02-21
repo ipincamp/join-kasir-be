@@ -5,7 +5,7 @@ namespace App\Http\Requests\Toko;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class SettingTokoRequest extends FormRequest
+class CreateTokoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,8 @@ class SettingTokoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'address' => ['required', 'string', 'max:255'],
-            'name' => ['required', 'string', 'max:100'],
-            'motd' => ['required', 'string', 'max:255'],
-            'header' => ['required', 'string', 'max:255'],
-            'footer' => ['required', 'string'],
+            'kode' => ['required', 'integer', 'unique:tokos,kode'],
+            'name' => ['required', 'string', 'max:50']
         ];
     }
 }

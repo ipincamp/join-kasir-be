@@ -12,6 +12,11 @@ class Toko extends Model
     protected $fillable = [
         'kode',
         'name',
+        'site_name',
+        'site_address',
+        'site_motd',
+        'site_header',
+        'site_footer',
         'created_by',
         'updated_by',
         'deleted_by',
