@@ -7,12 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
-    private ?string $token;
-
-    public function __construct($resource, ?string $token = null)
+    public function __construct($resource)
     {
         parent::__construct($resource);
-        $this->token = $token;
     }
 
     /**
@@ -22,7 +19,7 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $data = [
+        return [
             'id' => $this->id,
             'name' => $this->name,
             'username' => $this->username,
@@ -30,11 +27,12 @@ class UserResource extends JsonResource
             'avatar' => $this->avatar,
             'joined' => $this->created_at->format('d-m-Y H:m:s')
         ];
+    }
 
-        if ($this->token) {
-            $data['token'] = $this->token;
-        }
-
-        return $data;
+    public static function collection($resource)
+    {
+        return parent::collection($resource)->map(function ($item) {
+            return $item;
+        });
     }
 }

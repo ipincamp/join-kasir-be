@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CashierController;
-use App\Http\Controllers\LeaderController;
-use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\SettingTokoController;
 use App\Http\Controllers\TokoController;
 use App\Http\Controllers\User\AdminUserController;
+use App\Http\Controllers\User\CashierUserController;
+use App\Http\Controllers\User\LeaderUserController;
+use App\Http\Controllers\User\OwnerUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/users', 'allUsers'); // passed
         Route::get('/users/active', 'active'); // passed
         Route::get('/users/deleted', 'deleted'); // passed
+        Route::get('/users/{id}/restore', 'restore'); // passed
         Route::patch('/users/{id}/reset', 'resetPassword'); // passed
         Route::delete('/users/{id}/temp', 'tempoRemove'); // passed
         Route::delete('/users/{id}/perm', 'permaRemove'); // passed
@@ -56,21 +57,21 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     /** Owner */
-    Route::controller(OwnerController::class)->group(function () {
+    Route::controller(OwnerUserController::class)->group(function () {
         Route::get('/owners', 'index'); // passed
         Route::post('/owners', 'store'); // passed
         Route::patch('/owners/{id}', 'update'); // passed
     });
 
     /** Leader */
-    Route::controller(LeaderController::class)->group(function () {
+    Route::controller(LeaderUserController::class)->group(function () {
         Route::get('/leaders', 'index'); // passed
         Route::post('/leaders', 'store'); // passed
         Route::patch('/leaders/{id}', 'update'); // passed
     });
 
     /** Cashier */
-    Route::controller(CashierController::class)->group(function () {
+    Route::controller(CashierUserController::class)->group(function () {
         Route::get('/cashiers', 'index'); // passed
         Route::post('/cashiers', 'store'); // passed
         Route::patch('/cashiers/{id}', 'update'); // passed

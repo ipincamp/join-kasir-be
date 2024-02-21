@@ -28,7 +28,14 @@ class AuthController extends Controller
         $role = config('global.roles')[(int)$user->level - 1];
         $token = $user->createToken('login', [$role])->plainTextToken;
 
-        return new ApiResponse(new UserResource($user, $token), 200, 'Login berhasil.');
+        return new ApiResponse(
+            [
+                'user' => new UserResource($user),
+                'token' => $token
+            ],
+            200,
+            'Login berhasil.'
+        );
     }
 
     /**

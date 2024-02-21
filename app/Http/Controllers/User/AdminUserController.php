@@ -17,12 +17,10 @@ class AdminUserController extends Controller
     public function allUsers()
     {
         $users = User::withTrashed()->where('level', '!=', 1)->get();
+        $data = count($users) < 1 ? [] : UserResource::collection($users);
+        $message = count($users) < 1 ? 'Data pengguna masih kosong.' : 'Berhasil mendapatkan semua data pengguna.';
 
-        return new ApiResponse(
-            new UserResource($users),
-            200,
-            'Berhasil mendapatkan semua data pengguna.'
-        );
+        return new ApiResponse($data, 200, $message);
     }
 
     /**
@@ -32,11 +30,10 @@ class AdminUserController extends Controller
     {
         $users = User::where('level', '!=', 1)->get();
 
-        return new ApiResponse(
-            new UserResource($users),
-            200,
-            'Berhasil mendapatkan semua data pengguna aktif.'
-        );
+        $data = count($users) < 1 ? [] : UserResource::collection($users);
+        $message = count($users) < 1 ? 'Data pengguna aktif masih kosong.' : 'Berhasil mendapatkan semua data pengguna aktif.';
+
+        return new ApiResponse($data, 200, $message);
     }
 
     /**
@@ -44,13 +41,12 @@ class AdminUserController extends Controller
      */
     public function deleted()
     {
-        $users = User::where('level', '!=', 1)->get();
+        $users = User::onlyTrashed()->where('level', '!=', 1)->get();
 
-        return new ApiResponse(
-            new UserResource($users),
-            200,
-            'Berhasil mendapatkan semua data pengguna yang dihapus.'
-        );
+        $data = count($users) < 1 ? [] : UserResource::collection($users);
+        $message = count($users) < 1 ? 'Data pengguna terhapus masih kosong.' : 'Berhasil mendapatkan semua data pengguna terhapus.';
+
+        return new ApiResponse($data, 200, $message);
     }
 
     /**
@@ -58,7 +54,7 @@ class AdminUserController extends Controller
      */
     public function resetPassword(ResetPasswordUserRequest $request, string $id)
     {
-        $user = User::where('level', '!=', 1)->find($id);
+        $user = User::withTrashed()->where('level', '!=', 1)->find($id);
         $admin = auth()->user();
 
         if (!$user) {
@@ -74,7 +70,7 @@ class AdminUserController extends Controller
             'updated_by' => $admin->id
         ]);
 
-        return new ApiResponse($user, 200, 'Kata sandi pengguna berhasil direset.');
+        return new ApiResponse([], 200, 'Kata sandi pengguna berhasil direset.');
     }
 
     /**
@@ -112,5 +108,21 @@ class AdminUserController extends Controller
         $user->forceDelete();
 
         return new ApiResponse([], 200, 'Pengguna berhasil dihapus (permanen).');
+    }
+
+    /**
+     * Restore deleted user.
+     */
+    public function restore(string $id)
+    {
+        $user = User::withTrashed()->where('level', '!=', 1)->find($id);
+
+        if (!$user) {
+            return new ApiResponse([], 403, 'Pengguna tidak ditemukan.');
+        }
+
+        $user->restore();
+
+        return new ApiResponse([], 200, 'Pengguna berhasil pulihkan.');
     }
 }
