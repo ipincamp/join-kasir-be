@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Toko\SettingTokoController;
 use App\Http\Controllers\Toko\TokoController;
 use App\Http\Controllers\User\AdminUserController;
