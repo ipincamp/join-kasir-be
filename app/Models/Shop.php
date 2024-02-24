@@ -4,19 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Toko extends Model
+class Shop extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'kode',
+        'code',
         'name',
-        'site_name',
-        'site_address',
-        'site_motd',
-        'site_header',
-        'site_footer',
         'created_by',
         'updated_by',
         'deleted_by',

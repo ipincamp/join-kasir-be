@@ -23,7 +23,6 @@ class User extends Authenticatable
         'username',
         'password',
         'level',
-        'pin',
         'avatar',
         'created_by',
         'updated_by',

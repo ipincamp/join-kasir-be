@@ -4,10 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginAuthRequest;
-use App\Http\Requests\Auth\LogoutAuthRequest;
-use App\Http\Resources\UserResource;
-use App\Http\Responses\ApiResponse;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,26 +22,46 @@ class AuthController extends Controller
      */
     public function create()
     {
-        return view('auth.login');
+        //
     }
 
     /**
      * Store a newly created resource in storage.
+     *
+     * Login
      */
     public function store(LoginAuthRequest $request)
     {
-        $request->authenticate();
-        $request->session()->regenerate();
+        if (!Auth::attempt($request->only('username', 'password'), boolval($request['remember']))) {
+            return $this->response(400, 'Identitas tidak sesuai dengan data kami.');
+        }
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        $user = $request->user();
+
+        if (count($user->tokens) >= 1) {
+            return $this->response(403, 'Anda sudah login.');
+        }
+
+        $role = config('api.roles')[(int)$user->level - 1];
+        $expire = now()->addMinutes((int)config('sanctum.expiration'));
+        $token = $user->createToken('login', [$role], $expire);
+
+        return $this->response(200, 'Login berhasil.', [
+            'user' => $user,
+            'token' => $token->plainTextToken,
+        ]);
     }
 
     /**
      * Display the specified resource.
+     *
+     * Profile
      */
-    public function show(string $id)
+    public function show()
     {
-        //
+        $user = auth()->user();
+
+        return $this->response(200, 'Berhasil mendapatkan informasi Anda.', $user);
     }
 
     /**
@@ -66,62 +82,13 @@ class AuthController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * Logout
      */
-    public function destroy(LogoutAuthRequest $request)
-    {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/');
-    }
-
-    /**
-     * Login.
-     */
-    public function login(LoginAuthRequest $request)
-    {
-        if (!Auth::attempt($request->all())) {
-            return new ApiResponse([], 400, 'Identitas tidak sesuai dengan data kami.');
-        }
-
-        $user = $request->user();
-
-        if (count($user->tokens) >= 1) {
-            return new ApiResponse([], 403, 'Anda sudah login.');
-        }
-
-        $role = config('global.roles')[(int)$user->level - 1];
-        $token = $user->createToken('login', [$role])->plainTextToken;
-
-        return new ApiResponse(
-            [
-                'user' => new UserResource($user),
-                'token' => $token
-            ],
-            200,
-            'Login berhasil.'
-        );
-    }
-
-    /**
-     * Profile.
-     */
-    public function profile()
-    {
-        $user = auth()->user();
-
-        return new ApiResponse(new UserResource($user), 200, 'Berhasil mendapatkan informasi Anda.');
-    }
-
-    /**
-     * Logout.
-     */
-    public function logout(LogoutAuthRequest $request)
+    public function destroy(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
 
-        return new ApiResponse([], 200, 'Logout berhasil.');
+        return $this->response(200, 'Logout berhasil.');
     }
 }
