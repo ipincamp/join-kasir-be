@@ -22,17 +22,8 @@ class UpdateShopRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => ['nullable', 'integer'],
-            'name' => ['nullable', 'string', 'min:3', 'max:50'],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'code.integer' => 'Kode toko harus berupa angka.',
-            'name.min' => 'Nama toko minimal 3 karakter.',
-            'name.max' => 'Nama toko maksimal 50 karakter.',
+            'kode' => ['nullable', 'integer'],
+            'nama' => ['nullable', 'string', 'min:3', 'max:50'],
         ];
     }
 }

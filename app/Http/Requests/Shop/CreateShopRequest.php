@@ -22,21 +22,8 @@ class CreateShopRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => ['required', 'integer', 'unique:shops,code'],
-            'name' => ['required', 'string', 'min:3', 'max:50', 'unique:shops,name'],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'code.required' => 'Kode toko wajib diisi.',
-            'code.integer' => 'Kode toko harus berupa angka.',
-            'code.unique' => "Kode toko ':input' sudah ada.",
-            'name.required' => 'Nama toko wajib diisi.',
-            'name.min' => 'Nama toko minimal 3 karakter.',
-            'name.max' => 'Nama toko maksimal 50 karakter.',
-            'name.unique' => "Nama toko ':input' sudah terpakai.",
+            'kode' => ['required', 'integer', 'unique:shops,code'],
+            'nama' => ['required', 'string', 'min:3', 'max:50', 'unique:shops,name'],
         ];
     }
 }
