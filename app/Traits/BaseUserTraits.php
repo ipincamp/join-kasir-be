@@ -20,13 +20,13 @@ trait BaseUserTraits
             return $this->response(403, 'Anda tidak diperbolehkan untuk melakukan itu.');
         }
 
-        if ($level > 1 && count($request['shops']) > 1) {
+        if ($level > 1 && count($request['toko']) > 1) {
             return $this->response(403, 'Anda hanya dapat menambahkan banyak toko kepada pemilik.');
         }
 
         $role = $this->getPeran($level - 1);
         $user = User::create([
-            'name' => $request['name'],
+            'name' => $request['nama'],
             'username' => $request['username'],
             'password' => Hash::make($request['password']),
             'level' => $level,
@@ -34,7 +34,7 @@ trait BaseUserTraits
         ]);
         $shopOwners = [];
 
-        foreach ($request['shops'] as $shop_id) {
+        foreach ($request['toko'] as $shop_id) {
             $shopOwners[] = [
                 'user_id' => $user->id,
                 'shop_id' => (int)$shop_id,
