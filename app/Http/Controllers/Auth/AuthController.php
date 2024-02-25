@@ -37,12 +37,7 @@ class AuthController extends Controller
         }
 
         $user = $request->user();
-
-        if (count($user->tokens) >= 1) {
-            return $this->response(403, 'Anda sudah login.');
-        }
-
-        $role = config('api.roles')[(int)$user->level - 1];
+        $role = $this->getRole((int)$user->level - 1);
         $expire = now()->addMinutes((int)config('sanctum.expiration'));
         $token = $user->createToken('login', [$role], $expire);
 
