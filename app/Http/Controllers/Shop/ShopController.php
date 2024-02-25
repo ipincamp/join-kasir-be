@@ -12,7 +12,7 @@ class ShopController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * Get all shop
+     * *Get all shops.
      */
     public function index()
     {
@@ -32,13 +32,13 @@ class ShopController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * Create new shop
+     * *Create new shop.
      */
     public function store(CreateShopRequest $request)
     {
         $shop = Shop::create([
-            'code' => (int)$request['code'],
-            'name' => $request['name'],
+            'code' => (int)$request['kode'],
+            'name' => $request['nama'],
             'created_by' => auth()->user()->id,
         ]);
 
@@ -48,7 +48,7 @@ class ShopController extends Controller
     /**
      * Display the specified resource.
      *
-     * Get detail
+     * *Get detail shop.
      */
     public function show(string $id)
     {
@@ -72,7 +72,7 @@ class ShopController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * Update shop
+     * *Update shop.
      */
     public function update(UpdateShopRequest $request, string $id)
     {
@@ -83,8 +83,8 @@ class ShopController extends Controller
         }
 
         $shop->update([
-            'code' => (int)$request['code'],
-            'name' => $request['name'],
+            'code' => (int)$request['kode'],
+            'name' => $request['nama'],
             'updated_by' => auth()->user()->id,
         ]);
 
@@ -94,7 +94,7 @@ class ShopController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * Delete shop
+     * !Delete shop
      */
     public function destroy(string $id)
     {
@@ -113,7 +113,7 @@ class ShopController extends Controller
     }
 
     /**
-     * Deleted shop list
+     * !Deleted shop list
      */
     public function trash()
     {
@@ -123,7 +123,7 @@ class ShopController extends Controller
     }
 
     /**
-     * Restore deleted shop
+     * !Restore deleted shop
      */
     public function restore(string $id)
     {
