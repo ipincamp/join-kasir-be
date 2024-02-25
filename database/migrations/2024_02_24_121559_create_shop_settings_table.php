@@ -11,15 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shops', function (Blueprint $table) {
+        Schema::create('shop_settings', function (Blueprint $table) {
             $table->id();
-            $table->integer('code')->unique('shop_code');
-            $table->string('name', 50)->unique('shop_name');
+            $table->string('name', 50);
+            $table->string('address', 255);
+            $table->string('motd', 100);
+            $table->longText('header');
+            $table->longText('footer');
             $table->timestamps();
-            $table->softDeletes();
+            $table->unsignedBigInteger('shop_id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
-            $table->unsignedBigInteger('deleted_by')->nullable();
+
+            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
         });
     }
 
@@ -28,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shops');
+        Schema::dropIfExists('shop_settings');
     }
 };
