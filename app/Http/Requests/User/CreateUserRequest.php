@@ -3,7 +3,6 @@
 namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class CreateUserRequest extends FormRequest
 {
@@ -12,7 +11,7 @@ class CreateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return auth()->user()->level == 1;
     }
 
     /**
@@ -23,10 +22,15 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:100'],
-            'username' => ['required', 'string', 'max:50', 'unique:users,username', 'alpha_dash'],
-            'password' => ['required', 'string', 'min:6', 'confirmed', 'alpha_num'],
-            'pin' => ['nullable', 'boolean']
+            'nama' => ['required', 'string', 'max:100'],
+            'username' => ['required', 'string', 'min:3', 'max:50', 'unique:users,username'],
+            'password' => ['required', 'string', 'min:8', 'max:32', 'confirmed'],
+            'toko' => ['required', 'array', function ($attribute, $value, $fail) {
+                if (count($value) !== count(array_unique($value))) {
+                    $fail($attribute . ' memiliki nilai yang sama.');
+                }
+            }],
+            'toko.*' => ['integer', 'exists:shops,id'],
         ];
     }
 }

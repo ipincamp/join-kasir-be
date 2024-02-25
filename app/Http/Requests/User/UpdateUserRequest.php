@@ -3,7 +3,6 @@
 namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -12,7 +11,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return auth()->user()->level == 1;
     }
 
     /**
@@ -23,8 +22,9 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'string', 'max:100'],
-            'username' => ['nullable', 'string', 'max:50', 'alpha_dash']
+            'nama' => ['nullable', 'string', 'max:100'],
+            'username' => ['nullable', 'string', 'min:3', 'max:50'],
+            'password' => ['nullable', 'string', 'min:8', 'max:32', 'confirmed'],
         ];
     }
 }
