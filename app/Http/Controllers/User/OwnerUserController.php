@@ -4,80 +4,71 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Resources\UserResource;
-use App\Http\Responses\ApiResponse;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Traits\BaseUserTraits;
 
 class OwnerUserController extends Controller
 {
+    use BaseUserTraits;
+
     /**
-     * Get all owners.
+     * Display a listing of the resource.
+     *
+     * *Get all owners.
      */
     public function index()
     {
-        $owners = User::where('level', 2)->get();
-        $data = count($owners) < 1 ? [] : UserResource::collection($owners);
-        $message = count($owners) < 1 ? 'Data pemilik masih kosong.' : 'Berhasil mendapatkan semua data pemilik.';
-
-        return new ApiResponse($data, 200, $message);
+        return $this->getUsers(2);
     }
 
     /**
-     * Create new owner.
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * *Create new owner.
      */
     public function store(CreateUserRequest $request)
     {
-        $owner = User::create([
-            'name' => $request['name'],
-            'username' => $request['username'],
-            'password' => Hash::make($request['password']),
-            'level' => 2,
-            'pin' => boolval($request['pin']),
-            'created_by' => auth()->user()->id
-        ]);
-
-        return new ApiResponse(
-            new UserResource($owner),
-            201,
-            'Pemilik berhasil ditambahkan.'
-        );
+        return $this->addUser($request, 2);
     }
 
     /**
-     * Update name of owner.
+     * Display the specified resource.
+     *
+     * *Get detail owner.
      */
-    public function update(UpdateUserRequest $request, string $id)
+    public function show(string $id)
     {
-        $owner = User::where('level', 2)->find($id);
+        return $this->getUser((int)$id, 2);
+    }
 
-        if (!$owner) {
-            return new ApiResponse([], 400, 'Pemilik tidak ditemukan.');
-        }
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
 
-        $data = [];
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update()
+    {
+        //
+    }
 
-        if ($request['name']) {
-            $data['name'] = $request['name'];
-            $data['updated_by'] = auth()->user()->id;
-        }
-
-        if ($request['username']) {
-            if ($request['username'] != $owner->username) {
-                $exist = User::where('level', 2)->where('username', $request['username'])->first();
-
-                if ($exist) {
-                    return new ApiResponse([], 400, 'Username sudah dipakai.');
-                }
-            }
-
-            $data['username'] = $request['username'];
-            $data['updated_by'] = auth()->user()->id;
-        }
-
-        $owner->update($data);
-
-        return new ApiResponse(new UserResource($owner), 200, 'Data pemilik berhasil diubah.');
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

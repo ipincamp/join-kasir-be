@@ -7,18 +7,18 @@ use App\Http\Requests\User\CreateUserRequest;
 use App\Traits\BaseUserTraits;
 use Illuminate\Http\Request;
 
-class CashierUserController extends Controller
+class HeadUserController extends Controller
 {
     use BaseUserTraits;
 
     /**
      * Display a listing of the resource.
      *
-     * *Get all cashiers.
+     * *Get all heads.
      */
     public function index()
     {
-        return $this->getUsers(4);
+        return $this->getUsers(3);
     }
 
     /**
@@ -32,21 +32,21 @@ class CashierUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * *Create a new cashier.
+     * *Create a new head.
      */
     public function store(CreateUserRequest $request)
     {
-        return $this->addUser($request, 4);
+        return $this->addUser($request, 3);
     }
 
     /**
      * Display the specified resource.
      *
-     * *Get detail cashier.
+     * *Get detail head.
      */
     public function show(string $id)
     {
-        return $this->getUser((int)$id, 4);
+        return $this->getUser((int)$id, 3);
     }
 
     /**
