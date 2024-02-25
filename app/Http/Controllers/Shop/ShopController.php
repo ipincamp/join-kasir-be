@@ -82,6 +82,14 @@ class ShopController extends Controller
             return $this->response(400, 'Toko tidak ditemukan.');
         }
 
+        if (Shop::where('code', $request['kode'])->where('id', '!=', $shop->id)->exists()) {
+            return $this->response(400, 'Kode toko itu sudah digunakan oleh toko lain.');
+        }
+
+        if (Shop::where('name', $request['nama'])->where('id', '!=', $shop->id)->exists()) {
+            return $this->response(400, 'Nama toko itu sudah digunakan oleh toko lain.');
+        }
+
         $shop->update([
             'code' => (int)$request['kode'],
             'name' => $request['nama'],
@@ -90,6 +98,7 @@ class ShopController extends Controller
 
         return $this->response(200, 'Toko berhasil di update.', $shop);
     }
+
 
     /**
      * Remove the specified resource from storage.
