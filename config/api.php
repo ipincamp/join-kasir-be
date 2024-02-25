@@ -7,4 +7,5 @@ return [
         'password' => env('ADMIN_PASSWORD', 'admin123'),
     ],
     'roles' => ['admin', 'owner', 'head', 'cashier'],
+    'peran' => ['Admin', 'Pemilik', 'Kepala', 'Kasir'],
 ];
