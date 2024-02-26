@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ShopOwner extends Model
 {
@@ -23,6 +22,8 @@ class ShopOwner extends Model
 
     /**
      * Many shops owned by one user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -30,10 +31,12 @@ class ShopOwner extends Model
     }
 
     /**
-     * A ShopOwner has many shops.
+     * Get the shop that owns the ShopOwner
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function shops(): HasMany
+    public function shop(): BelongsTo
     {
-        return $this->hasMany(Shop::class);
+        return $this->belongsTo(Shop::class);
     }
 }

@@ -27,7 +27,9 @@ class ShopSetting extends Model
     ];
 
     /**
-     * Settings for one shop.
+     * Get the shop that owns the ShopSetting
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function shop(): BelongsTo
     {
