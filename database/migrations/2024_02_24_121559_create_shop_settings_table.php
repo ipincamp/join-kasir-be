@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('shop_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('username', 50)->unique('user_username');
-            $table->string('password', 60);
-            $table->enum('level', [1, 2, 3, 4]);
-            $table->string('avatar', 50)->default('user.png');
-            $table->rememberToken();
+            $table->string('name', 50);
+            $table->string('address', 255);
+            $table->string('motd', 100);
+            $table->longText('header');
+            $table->longText('footer');
             $table->timestamps();
-            $table->softDeletes();
+            $table->unsignedBigInteger('shop_id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
-            $table->unsignedBigInteger('deleted_by')->nullable();
+
+            $table->foreign('shop_id')->references('id')->on('shops')->onDelete('cascade');
         });
     }
 
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('shop_settings');
     }
 };

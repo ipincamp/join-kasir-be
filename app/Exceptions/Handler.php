@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Http\Responses\ApiResponse;
+use App\Traits\BaseTraits;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
@@ -13,6 +13,8 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use BaseTraits;
+
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
@@ -37,27 +39,22 @@ class Handler extends ExceptionHandler
             if ($request->is('api/*')) {
                 // dd(class_basename($e));
                 if ($e instanceof NotFoundHttpException) {
-                    return new ApiResponse([], 404, 'Endpoint tidak ditemukan.');
+                    return $this->response(404, 'Endpoint tidak ditemukan.');
                 }
 
                 if ($e instanceof MethodNotAllowedHttpException) {
-                    return new ApiResponse([], 405, 'Metode yang Anda gunakan salah.');
+                    return $this->response(405, 'Method yang digunakan salah.');
                 }
 
                 if ($e instanceof AuthenticationException) {
-                    return new ApiResponse([], 403, 'Anda harus login terlebih dahulu.');
+                    return $this->response(403, 'Anda harus login terlebih dahulu.');
                 }
 
                 if ($e instanceof AccessDeniedHttpException) {
-                    return new ApiResponse([], 403, 'Anda tidak memiliki izin.');
+                    return $this->response(403, 'Anda tidak memiliki izin.');
                 }
 
-                if ($e instanceof ValidationException) {
-                    return new ApiResponse($e->validator->getMessageBag(), 400, 'Terjadi kesalahan pada input.');
-                }
-
-                dd($e);
-                return new ApiResponse($e, 500, 'Terjadi kesalahan yang tidak diketahui.');
+                return $this->response(500, 'Terjadi kesalahan yang tidak diketahui.');
             }
         });
     }

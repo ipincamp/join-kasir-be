@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Shop;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class SettingShopRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->level == 1;
+        return (int)auth()->user()->level <= 2;
     }
 
     /**
@@ -22,8 +22,11 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama' => ['required', 'string', 'max:100'],
-            'username' => ['required', 'string', 'min:3', 'max:50'],
+            'alamat_toko' => ['required', 'string', 'max:255'],
+            'nama_toko' => ['required', 'string', 'max:50'],
+            'motd_toko' => ['required', 'string', 'max:100'],
+            'nota_atas' => ['required', 'string'],
+            'nota_bawah' => ['required', 'string'],
         ];
     }
 }

@@ -7,18 +7,18 @@ use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Traits\BaseUserTraits;
 
-class OwnerUserController extends Controller
+class HeadUserController extends Controller
 {
     use BaseUserTraits;
 
     /**
      * Display a listing of the resource.
      *
-     * *Get all owners.
+     * *Get all heads.
      */
     public function index()
     {
-        return $this->getUsers(2);
+        return $this->getUsers(3);
     }
 
     /**
@@ -32,21 +32,21 @@ class OwnerUserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * *Create new owner.
+     * *Create a new head.
      */
     public function store(CreateUserRequest $request)
     {
-        return $this->addUser($request, 2);
+        return $this->addUser($request, 3);
     }
 
     /**
      * Display the specified resource.
      *
-     * *Get detail owner.
+     * *Get detail head.
      */
     public function show(string $id)
     {
-        return $this->getUser((int)$id, 2);
+        return $this->getUser((int)$id, 3);
     }
 
     /**
@@ -60,11 +60,11 @@ class OwnerUserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * * Update name and username of owner.
+     * * Update name and username of head.
      */
     public function update(UpdateUserRequest $request, string $id)
     {
-        return $this->updateInfo($request, (int)$id, 2);
+        return $this->updateInfo($request, (int)$id, 3);
     }
 
     /**

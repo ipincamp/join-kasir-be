@@ -1,11 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Toko\SettingTokoController;
-use App\Http\Controllers\Toko\TokoController;
-use App\Http\Controllers\User\AdminUserController;
+use App\Http\Controllers\Shop\ShopController;
+use App\Http\Controllers\Shop\ShopSettingController;
 use App\Http\Controllers\User\CashierUserController;
-use App\Http\Controllers\User\LeaderUserController;
+use App\Http\Controllers\User\HeadUserController;
 use App\Http\Controllers\User\OwnerUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,61 +19,59 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/** Public routes */
-Route::post('/login', [AuthController::class, 'login']); // passed
+/** Public Routes */
+Route::post('/login', [AuthController::class, 'store']); //! pass
 
-/** Protected routes */
+/** Protected Routes */
 Route::middleware(['auth:sanctum'])->group(function () {
     /** Auth */
     Route::controller(AuthController::class)->group(function () {
-        Route::get('/profile', 'profile'); // passed
-        Route::post('/logout', 'logout'); // passed
+        Route::get('/profile', 'show'); //! pass
+        Route::post('/logout', 'destroy'); //! pass
     });
 
-    /** Admin */
-    Route::controller(AdminUserController::class)->middleware('ability:admin')->group(function () {
-        Route::get('/users', 'allUsers'); // passed
-        Route::get('/users/active', 'active'); // passed
-        Route::get('/users/deleted', 'deleted'); // passed
-        Route::get('/users/{id}/restore', 'restore'); // passed
-        Route::patch('/users/{id}/reset', 'resetPassword'); // passed
-        Route::delete('/users/{id}/temp', 'tempoRemove'); // passed
-        Route::delete('/users/{id}/perm', 'permaRemove'); // passed
+    /** Shop */
+    Route::controller(ShopController::class)->group(function () {
+        Route::get('/shops', 'index'); //! pass
+        Route::post('/shops', 'store'); //! pass
+        Route::get('/shops/{id}', 'show'); //! pass
+        Route::patch('/shops/{id}', 'update'); //! pass
+
+        /*
+        ? Only admin can access it.
+        Route::delete('/shops/{id}', 'destroy'); // pass
+        Route::get('/bin/shops', 'trash'); // pass
+        Route::patch('/bin/shops/{id}', 'restore'); // pass
+        */
     });
 
-    /** Toko */
-    Route::controller(TokoController::class)->group(function () {
-        Route::get('/tokos', 'index'); // passed
-        Route::post('/tokos', 'store'); // passed
-        Route::get('/tokos/{id}', 'show'); // passed
-        Route::patch('/tokos/{id}', 'update'); // passed
-        // Route::delete('/tokos/{id}', 'destroy');
+    /** Shop - Setting */
+    Route::controller(ShopSettingController::class)->group(function () {
+        Route::get('/shops/{id}/settings', 'show'); //! pass
+        Route::post('/shops/{id}', 'update'); //! pass
     });
 
-    /** Setting Toko */
-    Route::controller(SettingTokoController::class)->group(function () {
-        Route::get('/tokos/{kode}/settings', 'show'); // passed
-        Route::post('/tokos/{kode}/settings', 'store'); // passed
-    });
-
-    /** Owner */
+    /** User - Owner */
     Route::controller(OwnerUserController::class)->group(function () {
-        Route::get('/owners', 'index'); // passed
-        Route::post('/owners', 'store'); // passed
-        Route::patch('/owners/{id}', 'update'); // passed
+        Route::get('/owners', 'index'); //! pass
+        Route::post('/owners', 'store'); //! pass
+        Route::get('/owners/{id}', 'show'); //! pass
+        Route::patch('/owners/{id}', 'update'); //! pass
     });
 
-    /** Leader */
-    Route::controller(LeaderUserController::class)->group(function () {
-        Route::get('/leaders', 'index'); // passed
-        Route::post('/leaders', 'store'); // passed
-        Route::patch('/leaders/{id}', 'update'); // passed
+    /** User - Head */
+    Route::controller(HeadUserController::class)->group(function () {
+        Route::get('/heads', 'index'); //! pass
+        Route::post('/heads', 'store'); //! pass
+        Route::get('/heads/{id}', 'show'); //! pass
+        Route::patch('/heads/{id}', 'update'); //! pass
     });
 
-    /** Cashier */
+    /** User - Cashier */
     Route::controller(CashierUserController::class)->group(function () {
-        Route::get('/cashiers', 'index'); // passed
-        Route::post('/cashiers', 'store'); // passed
-        Route::patch('/cashiers/{id}', 'update'); // passed
+        Route::get('/cashiers', 'index'); //! pass
+        Route::post('/cashiers', 'store'); //! pass
+        Route::get('/cashiers/{id}', 'show'); //! pass
+        Route::patch('/cashiers/{id}', 'update'); //! pass
     });
 });

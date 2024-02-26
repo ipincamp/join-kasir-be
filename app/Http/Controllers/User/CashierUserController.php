@@ -5,79 +5,73 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Resources\UserResource;
-use App\Http\Responses\ApiResponse;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Traits\BaseUserTraits;
 
 class CashierUserController extends Controller
 {
+    use BaseUserTraits;
+
     /**
-     * Get all cashiers.
+     * Display a listing of the resource.
+     *
+     * *Get all cashiers.
      */
     public function index()
     {
-        $cashiers = User::where('level', 4)->get();
-        $data = count($cashiers) < 1 ? [] : UserResource::collection($cashiers);
-        $message = count($cashiers) < 1 ? 'Data kasir masih kosong.' : 'Berhasil mendapatkan semua data kasir.';
-
-        return new ApiResponse($data, 200, $message);
+        return $this->getUsers(4);
     }
 
     /**
-     * Create new cashier.
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * *Create a new cashier.
      */
     public function store(CreateUserRequest $request)
     {
-        $kasir = User::create([
-            'name' => $request['name'],
-            'username' => $request['username'],
-            'password' => Hash::make($request['password']),
-            'level' => 4,
-            'pin' => false,
-            'created_by' => auth()->user()->id
-        ]);
-
-        return new ApiResponse(
-            new UserResource($kasir),
-            201,
-            'Kasir berhasil ditambahkan.'
-        );
+        return $this->addUser($request, 4);
     }
 
     /**
-     * Update name of cashier.
+     * Display the specified resource.
+     *
+     * *Get detail cashier.
+     */
+    public function show(string $id)
+    {
+        return $this->getUser((int)$id, 4);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * * Update name and username of cashier.
      */
     public function update(UpdateUserRequest $request, string $id)
     {
-        $cashier = User::where('level', 4)->find($id);
+        return $this->updateInfo($request, (int)$id, 4);
+    }
 
-        if (!$cashier) {
-            return new ApiResponse([], 400, 'Kasir tidak ditemukan.');
-        }
-
-        $data = [];
-
-        if ($request['name']) {
-            $data['name'] = $request['name'];
-            $data['updated_by'] = auth()->user()->id;
-        }
-
-        if ($request['username']) {
-            if ($request['username'] != $cashier->username) {
-                $exist = User::where('level', 3)->where('username', $request['username'])->first();
-
-                if ($exist) {
-                    return new ApiResponse([], 400, 'Username sudah dipakai.');
-                }
-            }
-
-            $data['username'] = $request['username'];
-            $data['updated_by'] = auth()->user()->id;
-        }
-
-        $cashier->update($data);
-
-        return new ApiResponse(new UserResource($cashier), 200, 'Data kasir berhasil diubah.');
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('shops', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('username', 50)->unique('user_username');
-            $table->string('password', 60);
-            $table->enum('level', [1, 2, 3, 4]);
-            $table->string('avatar', 50)->default('user.png');
-            $table->rememberToken();
+            $table->integer('code')->unique('shop_code');
+            $table->string('name', 50)->unique('shop_name');
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedBigInteger('created_by');
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('shops');
     }
 };
