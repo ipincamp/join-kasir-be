@@ -4,8 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Traits\BaseUserTraits;
-use Illuminate\Http\Request;
 
 class CashierUserController extends Controller
 {
@@ -59,10 +59,12 @@ class CashierUserController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * * Update name and username of cashier.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
-        //
+        return $this->updateInfo($request, (int)$id, 4);
     }
 
     /**

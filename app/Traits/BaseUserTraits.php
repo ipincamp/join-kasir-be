@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\ShopOwner;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +21,7 @@ trait BaseUserTraits
             return $this->response(403, 'Anda tidak diperbolehkan untuk melakukan itu.');
         }
 
-        if ($level > 1 && count($request['toko']) > 1) {
+        if ($level > 2 && count($request['toko']) > 1) {
             return $this->response(403, 'Anda hanya dapat menambahkan banyak toko kepada pemilik.');
         }
 
@@ -77,5 +78,32 @@ trait BaseUserTraits
         }
 
         return $this->response(200, 'Berhasil mendapatkan semua data ' . $role . '.', $users);
+    }
+
+    /**
+     * Modify name and username.
+     */
+    public function updateInfo(UpdateUserRequest $request, int $id, int $level)
+    {
+        $user = User::where('level', $level)->find($id);
+        $role = config('api.peran')[$level - 1];
+
+        if (!$user) {
+            return $this->response(400, $role . ' tidak ditemukan.');
+        }
+
+        $username = $request['username'];
+
+        if (User::where('username', $username)->where('id', '!=', $user->id)->exists()) {
+            return $this->response(400, 'Username itu sudah digunakan oleh pengguna lain.');
+        }
+
+        $user->update([
+            'name' => $request['nama'],
+            'username' => $username,
+            'updated_by' => auth()->user()->id,
+        ]);
+
+        return $this->response(200, $role . ' berhasil diupdate.', $user);
     }
 }

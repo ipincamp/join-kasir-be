@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Traits\BaseUserTraits;
 
 class OwnerUserController extends Controller
@@ -58,10 +59,12 @@ class OwnerUserController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * * Update name and username of owner.
      */
-    public function update()
+    public function update(UpdateUserRequest $request, string $id)
     {
-        //
+        return $this->updateInfo($request, (int)$id, 2);
     }
 
     /**

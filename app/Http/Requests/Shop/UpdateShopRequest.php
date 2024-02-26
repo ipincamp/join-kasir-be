@@ -22,8 +22,8 @@ class UpdateShopRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'kode' => ['nullable', 'integer'],
-            'nama' => ['nullable', 'string', 'min:3', 'max:50'],
+            'kode' => ['required', 'integer'],
+            'nama' => ['required', 'string', 'min:3', 'max:50'],
         ];
     }
 }
