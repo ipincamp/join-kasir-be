@@ -33,7 +33,10 @@ class AuthController extends Controller
     public function store(LoginAuthRequest $request)
     {
         if (!Auth::attempt($request->only('username', 'password'), boolval($request['remember']))) {
-            return $this->response(400, 'Identitas tidak sesuai dengan data kami.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Identitas tidak sesuai dengan data kami.'
+            ], 400);
         }
 
         $user = $request->user();
@@ -41,11 +44,14 @@ class AuthController extends Controller
         $expire = now()->addMinutes((int)config('sanctum.expiration'));
         $token = $user->createToken('login', [$role], $expire);
 
-        return $this->response(200, 'Login berhasil.', [
+        return response()->json([
+            'success' => true,
+            'message' => 'Login berhasil.',
             'user' => $user,
-            'token' => $token->plainTextToken,
+            'token' => $token->plainTextToken
         ]);
     }
+
 
     /**
      * Display the specified resource.
