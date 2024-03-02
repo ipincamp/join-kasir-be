@@ -40,7 +40,7 @@ class AuthController extends Controller
         }
 
         $user = $request->user();
-        $role = $this->getRole((int)$user->level - 1);
+        $role = $user->getRoleNames()->first();
         $expire = now()->addMinutes((int)config('sanctum.expiration'));
         $token = $user->createToken('login', [$role], $expire);
 
@@ -51,7 +51,6 @@ class AuthController extends Controller
             'token' => $token->plainTextToken
         ]);
     }
-
 
     /**
      * Display the specified resource.

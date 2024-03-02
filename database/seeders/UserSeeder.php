@@ -14,12 +14,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // admin
-        User::create([
+        $admin = User::create([
             'name' => config('api.admin.name'),
             'username' => config('api.admin.username'),
             'password' => Hash::make(config('api.admin.password')),
-            'level' => 1,
             'created_by' => 0,
         ]);
+
+        $admin->assignRole('admin');
     }
 }

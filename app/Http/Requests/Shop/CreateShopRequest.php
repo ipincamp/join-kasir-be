@@ -11,7 +11,7 @@ class CreateShopRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->level == 1;
+        return auth()->user()->can('add-shop');
     }
 
     /**

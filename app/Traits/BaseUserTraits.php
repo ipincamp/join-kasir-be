@@ -17,6 +17,7 @@ trait BaseUserTraits
      */
     public function addUser(CreateUserRequest $request, int $level)
     {
+        dd($request->path());
         if ($level <= 1) {
             return $this->response(403, 'Anda tidak diperbolehkan untuk melakukan itu.');
         }
@@ -70,6 +71,7 @@ trait BaseUserTraits
     public function getUsers(int $level)
     {
         // $users = User::with('shops:code,name')->get();
+        $users = User::role('writer')->get();
         $users = User::where('level', $level)->get();
         $role = config('api.peran')[$level - 1];
 

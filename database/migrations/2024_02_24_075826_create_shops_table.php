@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('shops', function (Blueprint $table) {
             $table->id();
-            $table->integer('code')->unique('shop_code');
-            $table->string('name', 50)->unique('shop_name');
+            $table->integer('code')->unique();
+            $table->string('name', 50)->unique();
             $table->timestamps();
             $table->softDeletes();
             $table->unsignedBigInteger('created_by');

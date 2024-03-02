@@ -54,6 +54,7 @@ class Handler extends ExceptionHandler
                     return $this->response(403, 'Anda tidak memiliki izin.');
                 }
 
+                dd($e);
                 return $this->response(500, 'Terjadi kesalahan yang tidak diketahui.');
             }
         });
